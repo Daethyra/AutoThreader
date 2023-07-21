@@ -2,17 +2,17 @@
 name = "AutoThreader"
 version = "0.1.0"
 description = "Your project description"
-authors = ["Your Name <dev-daethyra@protonmail.com>"]
+authors = ["Daethyra <dev-daethyra@protonmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.11"
 flask = "^1.1.2"
 transformers = "^4.10.2"
 python-dotenv = "^0.19.0"
-requests = "2.25.1"
+requests = "^2.31.0"
 
 # Dependency from source code
-threadspy = { git = "https://github.com/junhoyeo/threads-py.git", branch = "main" }
+threads-py = { git = "https://github.com/junhoyeo/threads-py.git", branch = "main" }
 
 # Optional dependency
 [tool.poetry.group.ai.dependencies]
