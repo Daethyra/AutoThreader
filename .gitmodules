@@ -1,0 +1,3 @@
+[submodule "threads-py"]
+	path = threads-py
+	url = https://github.com/junhoyeo/threads-py.git
