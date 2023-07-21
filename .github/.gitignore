@@ -2,6 +2,8 @@
 .env
 poetry.lock
 
+venv
+env
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
