@@ -1,18 +1,20 @@
 [tool.poetry]
 name = "AutoThreader"
 version = "0.1.0"
-description = "Your project description"
+description = "AutoThreader is a project that listens for GitHub webhook events, summarizes the event details using Hugging Face's LongT5 transformer model, and posts the summary to Threads using the threads-py package. The project is containerized using Docker for easy setup and deployment."
 authors = ["Daethyra <dev-daethyra@protonmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-flask = "^1.1.2"
-transformers = "^4.10.2"
+fastapi = "^0.68.1"
+uvicorn = "^0.15.0"
 python-dotenv = "^0.19.0"
 requests = "^2.31.0"
+langchain = "^0.0.227"
+transformers = "^4.10.2"
 
 # Dependency from source code
-threads-py = { git = "https://github.com/junhoyeo/threads-py.git", branch = "main" }
+threads-py = { git = "https://github.com/Daethyra/threads-py", branch = "fork-sync" }
 
 # Optional dependency
 [tool.poetry.group.ai.dependencies]
@@ -21,3 +23,6 @@ langchain = "^0.0.227"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[build]
+script = "poetry install && uvicorn github_threader:app --host 0.0.0.0 --port 5000"

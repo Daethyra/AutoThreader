@@ -11,28 +11,32 @@ ENV PIP_NO_CACHE_DIR=yes \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
-# Install the required python packages globally
-ENV PATH="$PATH:/root/.local/bin"
-COPY requirements.txt .
+# Install Poetry
+RUN pip install poetry
 
-# Set the entrypoint
-ENTRYPOINT ["python", "-m", "threader"]
+# Set the working directory
+WORKDIR /app
+
+# Copy the project files into the Docker image
+COPY . /app
+
+# Install the required python packages using Poetry
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-dev
 
 # dev build -> include everything
 FROM threader-base as threader-dev
-RUN pip install --no-cache-dir -r requirements.txt
 WORKDIR /app
 ONBUILD COPY . ./
 
 # release build -> include bare minimum
 FROM threader-base as threader-release
-RUN sed -i '/Items below this point will not be included in the Docker Image/,$d' requirements.txt && \
-	pip install --no-cache-dir -r requirements.txt
 WORKDIR /app
-ONBUILD COPY threader/ ./threader
-ONBUILD COPY scripts/ ./scripts
-ONBUILD COPY plugins/ ./plugins
-ONBUILD COPY prompt_settings.yaml ./prompt_settings.yaml
+ONBUILD COPY github_threader/ ./github_threader
+ONBUILD COPY pyproject.toml ./pyproject.toml
 ONBUILD RUN mkdir ./data
 
 FROM threader-${BUILD_TYPE} AS threader
+
+# Set the entrypoint
+CMD ["python", "main.py"]
