@@ -16,7 +16,7 @@ services:
     environment:
       - THREADS_USERNAME=${THREADS_USERNAME}
       - THREADS_PASSWORD=${THREADS_PASSWORD}
-      - WEBHOOK_SECRET=${WEBHOOK_SECRET}
+      - WEBHOOK_SECRET=${THREADS_WEBHOOK_SECRET}
     volumes:
       - ./:/app
       - ./docker-compose.yml:/app/docker-compose.yml:ro
