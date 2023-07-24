@@ -14,6 +14,7 @@ import hmac
 import hashlib
 from datetime import datetime, timedelta
 from typing import List, Dict
+import uvicorn
 
 load_dotenv()
 
@@ -26,9 +27,10 @@ class GithubThreader(ThreadsAPI, RequestHandler, TaskChain, EnvManager, DocStore
         )
         self.tokenizer = AutoTokenizer.from_pretrained("google/long-t5-local-base")
         self.model = LongT5Model.from_pretrained("google/long-t5-local-base")
-        self.last_post_time = datetime.now() - timedelta(hours=1)  # initialize to an hour ago
+        self.last_post_time = datetime.now() - timedelta(hours=1)  # Adjust `timedelta` to configure the Threading frequency | Default->initializes to an hour ago
         self.backlog = []  # backlog of events during cooldown
 
+    # Handle Github webhook | Discord webhook integration planned
     @self.app.post("/webhook")
     async def handle_webhook(request: Request):
         signature = request.headers.get('X-Hub-Signature')
@@ -79,6 +81,7 @@ class GithubThreader(ThreadsAPI, RequestHandler, TaskChain, EnvManager, DocStore
             logging.error(f'Error generating summary from text: {e}', exc_info=True)
             return text  # return original text if summarization fails
 
+    # Define async thread poster
     async def post_thread_from_backlog(self):
         try:
             if datetime.now() - self.last_post_time > timedelta(hours=1) and self.backlog:
@@ -117,5 +120,4 @@ class GithubThreader(ThreadsAPI, RequestHandler, TaskChain, EnvManager, DocStore
 github_threader = GithubThreader()
 
 # Start the GithubThreader
-import uvicorn
 uvicorn.run(github_threader.app, host='0.0.0.0', port=5000)

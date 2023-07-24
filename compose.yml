@@ -1,6 +1,6 @@
+# NOTE: Version 3.9 requires at least Docker Compose version 2 and Docker Engine version 20.10.13!
 # To boot the app run the following:
 # docker compose up --build
-# NOTE: Version 3.9 requires at least Docker Compose version 2 and Docker Engine version 20.10.13!
 
 version: "3.9"
 
@@ -10,13 +10,13 @@ services:
       context: ./
       target: threader-release
       args:
-        - BUILD_TYPE=release
+        - BUILD_TYPE=release # Configurate your build type (-dev | -release)
     env_file:
-      - .env
+      - .env # Ensure your variables have been set before running 'Docker-Compose'
     environment:
       - THREADS_USERNAME=${THREADS_USERNAME}
       - THREADS_PASSWORD=${THREADS_PASSWORD}
-      - WEBHOOK_SECRET=${WEBHOOK_SECRET}
+      - WEBHOOK_SECRET=${THREADS_WEBHOOK_SECRET}
     volumes:
       - ./:/app
       - ./docker-compose.yml:/app/docker-compose.yml:ro
