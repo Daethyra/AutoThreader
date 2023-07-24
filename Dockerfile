@@ -2,8 +2,9 @@
 FROM python:3.10-slim AS threader-base
 
 # Install utilities
-RUN apt-get update && apt-get install -y \
-    curl jq wget git \
+RUN apt-get update && apt-get full-upgrade -y && apt-get install -y \
+    curl jq wget git python3-pip \
+    && pip3 install --upgrade pip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables
