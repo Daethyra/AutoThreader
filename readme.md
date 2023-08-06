@@ -1,4 +1,5 @@
 # AutoThreader
+###### WIP on hiatus
 
 ## Brief Description
 AutoThreader is a project that listens for GitHub webhook events, summarizes the event details using Hugging Face's LongT5 transformer model, and posts the summary to Threads using the threads-py package. The project is containerized using Docker for easy setup and deployment.
